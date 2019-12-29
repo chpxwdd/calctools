@@ -57,29 +57,22 @@ export default class BillCounterNominalFormItem extends Component {
 					</InputGroup>
 				</Col>
 				<Col lg={2} md={3} sm={4} xs={6} className="mt-1">
-					<InputGroup key={nominal} size="sm">
-						<InputGroup.Prepend>
-							<Button
-								onClick={this.decrement}
-								variant="info"
-								// variant={use ? "info" : "muted"}
-								disabled={!use || !count}
-							>
-								<i className="fa fa-minus" />
-							</Button>
-						</InputGroup.Prepend>
-						<Form.Control onChange={this.changeNominalHandler} value={count} disabled={!use} />
-						<InputGroup.Append>
-							<Button
-								onClick={this.increment}
-								// variant={use ? "secondary" : "muted"}
-								variant="info"
-								disabled={!use}
-							>
-								<i className="fa fa-plus" />
-							</Button>
-						</InputGroup.Append>
-					</InputGroup>
+					{/* {use && ( <Spinner value={nominal} increment={this.increment} decrement={decrement} />)} */}
+					{use && (
+						<InputGroup key={nominal} size="sm">
+							<InputGroup.Prepend>
+								<Button onClick={this.decrement} variant="info">
+									<i className="fa fa-minus" />
+								</Button>
+							</InputGroup.Prepend>
+							<Form.Control onChange={this.changeNominalHandler} value={count} disabled={!use} />
+							<InputGroup.Append>
+								<Button onClick={this.increment} variant="info">
+									<i className="fa fa-plus" />
+								</Button>
+							</InputGroup.Append>
+						</InputGroup>
+					)}
 				</Col>
 			</Row>
 		)
