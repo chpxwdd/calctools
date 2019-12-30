@@ -4,100 +4,47 @@ export default class BillCounterAmountFormItem extends Component {
 	constructor(props) {
 		super(props)
 		this.state = {
-			amount: null,
+			value: null,
 			name: null,
+			use: false,
 		}
+		this.changeName = this.changeName.bind(this)
+		this.changeValue = this.changeValue.bind(this)
+		this.changeUse = this.changeUse.bind(this)
 	}
 	// componentDidMount() { console.log(this.state) }
 	// componentDidUpdate() { }
 	// componentWillUpdate(nextProps, nextState) {	}
+	changeName(e) {
+		this.setState({}, function (props, state) {
 
-	/** SUM FORM-GROUP HANDLERS */
-	changeAmountHandler(e) {
-		const { value } = e.target
-		this.setState({ amount: value })
-	}
-
-	changeNameHandler(e) {
-		const { value } = e.target
-		this.setState({ name: value })
-	}
-
-	checkboxAmountHandler(e, idx) {
-		const { checked } = e.target
-		const { amounts } = this.state
-
-		amounts[Number(idx)].use = checked
-		this.setState({ amounts })
-	}
-
-	renderAmountItem(idx, key) {
-		const { amounts } = this.state
-		if (amounts.lenght === 0) {
-			return
+			props.cbUseNominal(state.name, state.value);
 		}
-		const { name, amount, use } = amounts[idx]
-		return (
-			<InputGroup key={key} className="mb-1" size="sm">
-				{/* SUM VALUE */}
-				<InputGroup.Prepend>
-					<InputGroup.Checkbox
-						title="Исключить из расчета"
-						name={"amountCheckbox" + idx}
-						// data-idx={idx}
-						onChange={e => this.checkboxAmountHandler(e, idx)}
-						checked={use}
-					/>
-				</InputGroup.Prepend>
 
-				<Form.Control type="text" value={name} disabled />
-				<Form.Control type="text" value={amount} disabled />
-
-				<InputGroup.Append>
-					{/* <Button
-                        title="Редактировать позицию"
-                        variant="primary"
-                        onClick={(e) => this.removeAmountItemHandler(e, idx)}
-                        disabled={!use}
-                    >
-                        <i className="fas fa-save" />
-                    </Button> */}
-					<Button
-						title="Редактировать позицию"
-						variant={use ? "danger" : "secondary"}
-						onClick={e => this.removeAmountItemHandler(e, idx)}
-						disabled={!use}
-					>
-						<i className="fas fa-trash" />
-					</Button>
-				</InputGroup.Append>
-			</InputGroup>
 		)
 	}
+	changeValue(e) { }
+	changeUse(e) { }
 
-	/** */
 	render() {
-		const { name, amount } = this.state
+		const { name, value, use } = this.state
 		return (
 			<InputGroup className="mb-1" size="sm">
-				{/* SUM VALUE */}
+				<InputGroup.Prepend>
+					<InputGroup.Checkbox onChange={this.useHandler} checked={use} />
+				</InputGroup.Prepend>
 				<Form.Control
 					type="text"
-					placeholder="Организация"
+					placeholder="Name"
 					value={!name ? "" : String(name)}
-					onChange={this.changeNameHandler}
+					onChange={this.amount}
 				/>
 				<Form.Control
 					type="text"
-					placeholder="Сумма"
-					value={!amount || isNaN(amount) ? "" : Number(amount)}
+					placeholder="Amount"
+					value={!value || isNaN(value) ? "" : Number(value)}
 					onChange={this.changeAmountHandler}
 				/>
-				<InputGroup.Append>
-					<Button onClick={this.createAmountItemHandler} disabled={!(amount && name)}>
-						<i className="fas fa-plus" />
-					</Button>
-				</InputGroup.Append>
 			</InputGroup>
 		)
 	}

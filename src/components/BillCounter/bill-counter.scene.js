@@ -1,6 +1,7 @@
 import React, { Component } from "react"
 import { Row, Col } from "react-bootstrap"
 import BillCounterNominalForm from "./bill-counter.nominal.form"
+import BillCounterAmountForm from "./bill-counter.amount.form"
 export default class BillCounterScene extends Component {
 	constructor(props) {
 		super(props)
@@ -10,6 +11,13 @@ export default class BillCounterScene extends Component {
 		}
 
 		this.cbUseNominals = this.cbUseNominals.bind(this)
+		this.cbUseAmounts = this.cbUseAmounts.bind(this)
+	}
+
+	cbUseAmounts(amounts) {
+		console.group("amount", amounts)
+		this.setState({ amounts: amounts })
+		console.groupEnd("amount", amounts)
 	}
 
 	cbUseNominals(nominals) {
@@ -27,7 +35,7 @@ export default class BillCounterScene extends Component {
 						&nbsp;
 					</Col>
 					<Col lg={8} md={8}>
-						{/* <BillCounterCompanyForm collectAmounts={this.collectAmounts} /> */}
+						<BillCounterAmountForm cbUseAmounts={this.cbUseAmounts} />
 					</Col>
 				</Row>
 				<Row>

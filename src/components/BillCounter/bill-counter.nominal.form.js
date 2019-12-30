@@ -32,9 +32,16 @@ export default class BillCounterNominalForm extends Component {
 	/** */
 	render() {
 		return (
-			<Form>
-				{BILL_NOMINALS.map(value => (<BillCounterNominalFormItem nominal={value} cbUseNominal={this.cbUseNominal} />))}
-			</Form>
+			<div>
+				{BILL_NOMINALS.map((value, key) => {
+					return (
+						<div key={key}>
+							<BillCounterNominalFormItem nominal={value} cbUseNominal={this.cbUseNominal} />
+						</div>
+					)
+				})}
+			</div>
+
 		)
 	}
 }
