@@ -1,5 +1,5 @@
 import React, { Component } from "react"
-import { Col, Row, Form, InputGroup, Button } from "react-bootstrap"
+import { Col, Row, Form, InputGroup } from "react-bootstrap"
 import UICounter from '../UI/ui.counter'
 export default class BillCounterNominalFormItem extends Component {
 	constructor(props) {
@@ -49,7 +49,6 @@ export default class BillCounterNominalFormItem extends Component {
 							<InputGroup.Checkbox onChange={this.useHandler} checked={use} />
 						</InputGroup.Prepend>
 						<Form.Control value={nominal} disabled />
-
 					</InputGroup>
 				</Form.Group>
 				<Form.Group className='mb-1' as={Col}>
