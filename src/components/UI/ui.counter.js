@@ -2,15 +2,33 @@
 import React, { Component } from 'react'
 import { InputGroup, Form, Button } from 'react-bootstrap'
 export default class UICounter extends Component {
-    constructor(props) { super(props) }
+    constructor(props) {
+        super(props)
+        this.setValue = this.setValue.bind(this)
+        this.incerment = this.incerment.bind(this)
+        this.decerment = this.decerment.bind(this)
+    }
+
+    incerment(e) {
+        this.props.cbCount(Number(this.props.value) + 1)
+    }
+
+    decerment(e) {
+        this.props.cbCount(Number(this.props.value) - 1)
+    }
+
+    setValue(e) {
+        this.props.cbCount(Number(e.target.value))
+    }
+
     render() {
-        const { min, max, value, cbCount } = this.props
+        const { min, max, value, cbCount, disabled } = this.props
         return (
             <InputGroup size="sm" >
                 <InputGroup.Prepend>
-                    <Button onClick={(e) => this.props.cbCount(Number(this.props.value) - 1)}
-                        variant="dark"
-                        disabled={min === Number(value) && min !== null}
+                    <Button
+                        onClick={(e) => this.props.cbCount(Number(this.props.value) - 1)}
+                        disabled={(min === Number(value) && min !== null) || disabled}
                     >
                         <i className="fa fa-minus" />
                     </Button>
@@ -19,12 +37,12 @@ export default class UICounter extends Component {
                     placeholder="0"
                     onChange={(e) => cbCount(e.target.value)}
                     value={Number(value)}
+                    disabled={disabled}
                 />
                 <InputGroup.Append>
                     <Button
                         onClick={(e) => cbCount(Number(this.props.value) + 1)}
-                        variant="dark"
-                        disabled={(max === Number(value) && max !== null)}
+                        disabled={((max === Number(value) && max !== null) || disabled)}
                     >
                         <i className="fa fa-plus" />
                     </Button>

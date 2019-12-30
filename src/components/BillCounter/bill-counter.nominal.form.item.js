@@ -10,30 +10,24 @@ export default class BillCounterNominalFormItem extends Component {
 			use: false,
 		}
 
-		this.checkboxNominalHandler = this.checkboxNominalHandler.bind(this)
-		this.changeNominalHandler = this.changeNominalHandler.bind(this)
+		this.useHandler = this.useHandler.bind(this)
 		this.cbCount = this.cbCount.bind(this)
 	}
+
 	componentDidMount() {
 		const { nominal } = this.props
-		this.setState({ nominal: nominal })
+		this.setState({ nominal: nominal, count: null })
 	}
 
-	// componentDidUpdate() {}
-	// componentWillReceiveProps(nextProps, nextState) {}
 
-	changeNominalHandler(e) {
-		const { value } = e.target
-		if (!Number(value)) {
-			return
-		}
-		this.setState({ count: e.target.value })
+	shouldComponentUpdate(nextProps, nextState, nextContext) {
+		return !(nextState.count !== this.state.count && nextState.use === this.state.use)
 	}
 
-	checkboxNominalHandler(e) {
+	useHandler(e) {
 		const { checked } = e.target
-		// this.setState({ count: 0, use: Boolean(checked) })
-		this.setState({ use: Boolean(checked) })
+		this.setState({ count: 0, use: Boolean(checked) })
+		// this.setState({ use: Boolean(checked) })
 	}
 
 	cbCount(count) {
@@ -52,14 +46,15 @@ export default class BillCounterNominalFormItem extends Component {
 				<Form.Group className='mb-1' as={Col}>
 					<InputGroup key={nominal} size="sm">
 						<InputGroup.Prepend>
-							<InputGroup.Checkbox onChange={this.checkboxNominalHandler} checked={use} />
+							<InputGroup.Checkbox onChange={this.useHandler} checked={use} />
 						</InputGroup.Prepend>
 						<Form.Control value={nominal} disabled />
 
 					</InputGroup>
 				</Form.Group>
 				<Form.Group className='mb-1' as={Col}>
-					{use && <UICounter value={count} cbCount={this.cbCount} min={0} max={null} />}
+					{/* {use && <UICounter value={count} cbCount={this.cbCount} min={0} max={null} />} */}
+					<UICounter value={count} cbCount={this.cbCount} min={0} max={null} disabled={!use} />
 				</Form.Group>
 			</Row>
 
