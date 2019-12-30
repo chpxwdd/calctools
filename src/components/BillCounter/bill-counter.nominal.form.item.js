@@ -1,6 +1,6 @@
 import React, { Component } from "react"
 import { Col, Row, Form, InputGroup, Button } from "react-bootstrap"
-
+import UICounter from '../UI/ui.counter'
 export default class BillCounterNominalFormItem extends Component {
 	constructor(props) {
 		super(props)
@@ -12,8 +12,7 @@ export default class BillCounterNominalFormItem extends Component {
 
 		this.checkboxNominalHandler = this.checkboxNominalHandler.bind(this)
 		this.changeNominalHandler = this.changeNominalHandler.bind(this)
-		this.decrement = this.decrement.bind(this)
-		this.increment = this.increment.bind(this)
+		this.updateCount = this.updateCount.bind(this)
 	}
 	componentDidMount() {
 		const { nominal } = this.props
@@ -33,48 +32,33 @@ export default class BillCounterNominalFormItem extends Component {
 
 	checkboxNominalHandler(e) {
 		const { checked } = e.target
-		this.setState({ use: Boolean(checked) })
+		this.setState({ count: 0, use: Boolean(checked) })
 	}
-	increment() {
-		const { count } = this.state
-		this.setState({ count: count + 1 })
-	}
-	decrement() {
-		const { count } = this.state
 
-		this.setState({ count: count - 1 })
+	updateCount(count) {
+		console.log("calback UPdate")
+		this.setState({ count: count })
 	}
+
 	render() {
 		const { count, use, nominal } = this.state
 		return (
-			<Row className="mb-2">
-				<Col lg={10} md={9} sm={8} xs={6} className="mt-1">
+
+			<Row >
+				<Form.Group className='mb-1' as={Col}>
 					<InputGroup key={nominal} size="sm">
 						<InputGroup.Prepend>
 							<InputGroup.Checkbox onChange={this.checkboxNominalHandler} checked={use} />
 						</InputGroup.Prepend>
 						<Form.Control value={nominal} disabled />
+
 					</InputGroup>
-				</Col>
-				<Col lg={2} md={3} sm={4} xs={6} className="mt-1">
-					{/* {use && ( <Spinner value={nominal} increment={this.increment} decrement={decrement} />)} */}
-					{use && (
-						<InputGroup key={nominal} size="sm">
-							<InputGroup.Prepend>
-								<Button onClick={this.decrement} variant="info">
-									<i className="fa fa-minus" />
-								</Button>
-							</InputGroup.Prepend>
-							<Form.Control onChange={this.changeNominalHandler} value={count} disabled={!use} />
-							<InputGroup.Append>
-								<Button onClick={this.increment} variant="info">
-									<i className="fa fa-plus" />
-								</Button>
-							</InputGroup.Append>
-						</InputGroup>
-					)}
-				</Col>
+				</Form.Group>
+				<Form.Group className='mb-1' as={Col}>
+					{use && <UICounter value={count} cbUpdate={this.updateCount} min={0} max={null} />}
+				</Form.Group>
 			</Row>
+
 		)
 	}
 }

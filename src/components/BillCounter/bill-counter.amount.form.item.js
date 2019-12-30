@@ -33,7 +33,7 @@ export default class BillCounterAmountFormItem extends Component {
 
 	renderAmountItem(idx, key) {
 		const { amounts } = this.state
-		if (amounts.lenght == 0) {
+		if (amounts.lenght === 0) {
 			return
 		}
 		const { name, amount, use } = amounts[idx]

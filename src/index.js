@@ -5,6 +5,7 @@ import { store } from './store/store'
 import { BrowserRouter } from 'react-router-dom'
 import registerServiceWorker from './services/register'
 import Root from './components/root'
+import 'bootstrap/dist/css/bootstrap.css';
 
 render(
   <div>
