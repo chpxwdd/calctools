@@ -9,21 +9,13 @@ export default class BillCounterScene extends Component {
 			nominals: {},
 		}
 
-		this.collectNominals = this.collectNominals.bind(this)
+		this.cbUseNominals = this.cbUseNominals.bind(this)
 	}
 
-	collectNominals(nominals) {
-		// if (!nominals.lenght) {
-		// 	return
-		// }
-		console.group("NOMINALS")
-		nominals.forEach((k, v) => {
-			console.log("k", k)
-			console.log("v", v)
-		})
-		console.groupEnd()
-
+	cbUseNominals(nominals) {
+		console.group("NOMINALS", nominals)
 		this.setState({ nominals: nominals })
+		console.groupEnd("NOMINALS", nominals)
 	}
 
 	render() {
@@ -40,7 +32,7 @@ export default class BillCounterScene extends Component {
 				</Row>
 				<Row>
 					<Col lg={4} md={4}>
-						<BillCounterNominalForm nominals={nominals} collectNominals={this.collectNominals} />
+						<BillCounterNominalForm nominals={nominals} cbUseNominals={this.cbUseNominals} />
 					</Col>
 					<Col lg={8} md={8}>
 						{/* {Object.values(amounts).length > 0 && Object.values(amounts).length > 0 && (

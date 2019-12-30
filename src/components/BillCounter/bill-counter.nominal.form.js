@@ -10,18 +10,12 @@ export default class BillCounterNominalForm extends Component {
 			nominals: {},
 		}
 
-		this.collectNominal = this.collectNominal.bind(this)
+		this.cbUseNominal = this.cbUseNominal.bind(this)
 	}
 
-	componentDidMount() {}
-	componentDidUpdate() {
-		const { nominals } = this.state
-		this.props.collectNominals(nominals)
-	}
 
-	componentWillUpdate(nextProps, nextState) {}
 
-	collectNominal(nominal, count) {
+	cbUseNominal(nominal, count) {
 		const { nominals } = this.state
 
 		if (count) {
@@ -29,16 +23,17 @@ export default class BillCounterNominalForm extends Component {
 		} else {
 			delete nominals[nominal]
 		}
-		this.setState({ nominals: nominals })
+		this.setState({ nominals: nominals }, function (props, state) {
+			this.props.cbUseNominals(nominals)
+
+		})
 	}
 
 	/** */
 	render() {
 		return (
 			<Form>
-				{BILL_NOMINALS.map(value => (
-					<BillCounterNominalFormItem nominal={value} collectNominal={this.collectNominal} />
-				))}
+				{BILL_NOMINALS.map(value => (<BillCounterNominalFormItem nominal={value} cbUseNominal={this.cbUseNominal} />))}
 			</Form>
 		)
 	}

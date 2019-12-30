@@ -12,7 +12,7 @@ export default class BillCounterNominalFormItem extends Component {
 
 		this.checkboxNominalHandler = this.checkboxNominalHandler.bind(this)
 		this.changeNominalHandler = this.changeNominalHandler.bind(this)
-		this.updateCount = this.updateCount.bind(this)
+		this.cbCount = this.cbCount.bind(this)
 	}
 	componentDidMount() {
 		const { nominal } = this.props
@@ -27,17 +27,21 @@ export default class BillCounterNominalFormItem extends Component {
 		if (!Number(value)) {
 			return
 		}
-		this.setState({ count: value })
+		this.setState({ count: e.target.value })
 	}
 
 	checkboxNominalHandler(e) {
 		const { checked } = e.target
-		this.setState({ count: 0, use: Boolean(checked) })
+		// this.setState({ count: 0, use: Boolean(checked) })
+		this.setState({ use: Boolean(checked) })
 	}
 
-	updateCount(count) {
-		console.log("calback UPdate")
-		this.setState({ count: count })
+	cbCount(count) {
+		console.log("calback cbUpdate", count)
+		const { nominal } = this.state
+		this.setState({ nominal: nominal, count: count }, function (props, state) {
+			this.props.cbUseNominal(nominal, Number(count));
+		})
 	}
 
 	render() {
@@ -55,7 +59,7 @@ export default class BillCounterNominalFormItem extends Component {
 					</InputGroup>
 				</Form.Group>
 				<Form.Group className='mb-1' as={Col}>
-					{use && <UICounter value={count} cbUpdate={this.updateCount} min={0} max={null} />}
+					{use && <UICounter value={count} cbCount={this.cbCount} min={0} max={null} />}
 				</Form.Group>
 			</Row>
 
