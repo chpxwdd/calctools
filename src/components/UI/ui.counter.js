@@ -29,13 +29,12 @@ export default class UICounter extends Component {
                     <Button
                         onClick={(e) => this.props.cbCount(Number(this.props.value) - 1)}
                         disabled={(min === Number(value) && min !== null) || disabled}
-                    >
-                        <i className="fa fa-minus" />
+                    ><i className="fa fa-minus" />
                     </Button>
                 </InputGroup.Prepend>
                 <Form.Control
                     placeholder="0"
-                    onChange={(e) => cbCount(e.target.value)}
+                    onChange={this.setValue}
                     value={Number(value)}
                     disabled={disabled}
                 />
@@ -43,8 +42,7 @@ export default class UICounter extends Component {
                     <Button
                         onClick={(e) => cbCount(Number(this.props.value) + 1)}
                         disabled={((max === Number(value) && max !== null) || disabled)}
-                    >
-                        <i className="fa fa-plus" />
+                    ><i className="fa fa-plus" />
                     </Button>
                 </InputGroup.Append>
             </InputGroup >
