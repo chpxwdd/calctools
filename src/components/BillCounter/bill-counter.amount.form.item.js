@@ -1,5 +1,6 @@
 import React, { Component } from "react"
-import { Form, InputGroup, Button } from "react-bootstrap"
+import { Form, InputGroup } from "react-bootstrap"
+
 export default class BillCounterAmountFormItem extends Component {
 	constructor(props) {
 		super(props)
@@ -31,19 +32,19 @@ export default class BillCounterAmountFormItem extends Component {
 		return (
 			<InputGroup className="mb-1" size="sm">
 				<InputGroup.Prepend>
-					<InputGroup.Checkbox onChange={this.useHandler} checked={use} />
+					<InputGroup.Checkbox onChange={this.changeUse} checked={use} />
 				</InputGroup.Prepend>
 				<Form.Control
 					type="text"
 					placeholder="Name"
 					value={!name ? "" : String(name)}
-					onChange={this.amount}
+					onChange={this.changeName}
 				/>
 				<Form.Control
 					type="text"
 					placeholder="Amount"
 					value={!value || isNaN(value) ? "" : Number(value)}
-					onChange={this.changeAmountHandler}
+					onChange={this.changeValue}
 				/>
 			</InputGroup>
 		)

@@ -5,7 +5,7 @@ export default class BillCounterNominalFormItem extends Component {
 	constructor(props) {
 		super(props)
 		this.state = {
-			nominal: null,
+			nominal: "",
 			count: null,
 			use: false,
 		}
@@ -31,7 +31,7 @@ export default class BillCounterNominalFormItem extends Component {
 	}
 
 	cbCount(count) {
-		console.log("calback cbUpdate", count)
+		console.log("callback cbUpdate", count)
 		const { nominal } = this.state
 		this.setState({ nominal: nominal, count: count }, function (props, state) {
 			this.props.cbUseNominal(nominal, Number(count));
