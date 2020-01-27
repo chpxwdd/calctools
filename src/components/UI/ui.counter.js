@@ -1,6 +1,6 @@
 
-import React, { Component } from 'react'
-import { InputGroup, Form, Button } from 'react-bootstrap'
+import React, { Fragment, Component } from 'react'
+import { InputGroup, Col, Form, Button } from 'react-bootstrap'
 export default class UICounter extends Component {
     constructor(props) {
         super(props)
@@ -10,42 +10,42 @@ export default class UICounter extends Component {
     }
 
     incerment(e) {
-        this.props.cbCount(Number(this.props.value) + 1)
+        this.props.cbUpdateCount(Number(this.props.value) + 1)
     }
 
     decerment(e) {
-        this.props.cbCount(Number(this.props.value) - 1)
+        this.props.cbUpdateCount(Number(this.props.value) - 1)
     }
 
     setValue(e) {
-        this.props.cbCount(Number(e.target.value))
+        this.props.cbUpdateCount(Number(e.target.value))
     }
 
     render() {
-        const { min, max, value, cbCount, disabled } = this.props
+        const { min, max, value, cbUpdateCount, disabled } = this.props
         return (
-            <InputGroup size="sm" >
+            <InputGroup size="sm">
                 <InputGroup.Prepend>
-                    <Button
-                        onClick={(e) => this.props.cbCount(Number(this.props.value) - 1)}
+                    <Button variant="secondary"
+                        onClick={(e) => this.props.cbUpdateCount(Number(this.props.value) - 1)}
                         disabled={(min === Number(value) && min !== null) || disabled}
                     ><i className="fa fa-minus" />
                     </Button>
                 </InputGroup.Prepend>
-                <Form.Control
+                <Form.Control className="bg-default text-secondary"
                     placeholder="0"
                     onChange={this.setValue}
                     value={Number(value)}
                     disabled={disabled}
                 />
                 <InputGroup.Append>
-                    <Button
-                        onClick={(e) => cbCount(Number(this.props.value) + 1)}
+                    <Button variant="secondary"
+                        onClick={(e) => cbUpdateCount(Number(this.props.value) + 1)}
                         disabled={((max === Number(value) && max !== null) || disabled)}
                     ><i className="fa fa-plus" />
                     </Button>
                 </InputGroup.Append>
-            </InputGroup >
+            </InputGroup>
         )
     }
 }

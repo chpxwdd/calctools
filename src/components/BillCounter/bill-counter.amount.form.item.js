@@ -5,46 +5,76 @@ export default class BillCounterAmountFormItem extends Component {
 	constructor(props) {
 		super(props)
 		this.state = {
-			value: null,
-			name: null,
-			use: false,
+			idx: null,
+			amount: 0,
+			company: "",
+			use: true,
 		}
-		this.changeName = this.changeName.bind(this)
-		this.changeValue = this.changeValue.bind(this)
+		this.changeCompany = this.changeCompany.bind(this)
+		this.changeAmount = this.changeAmount.bind(this)
 		this.changeUse = this.changeUse.bind(this)
+		this.handleChange = this.handleChange.bind(this)
 	}
-	// componentDidMount() { console.log(this.state) }
-	// componentDidUpdate() { }
+
+	componentDidMount() {
+
+	}
+	// componentDidUpdate(prevProps, prevState) {
+	// 	if (this.state !== prevState) {
+	// 		const { idx, company, amount, use } = this.state
+	// 		this.props.cbUpdateItem(idx, { company: company, amount: amount, use: use });
+	// 	}
+	// }
 	// componentWillUpdate(nextProps, nextState) {	}
-	changeName(e) {
-		this.setState({}, function (props, state) {
 
-			props.cbUseNominal(state.name, state.value);
-		}
-
+	handleChange(e) {
+		this.setState({ company: e.target.value }
+			// , () => {
+			// const { name, value, use } = this.state
+			// this.props.cbUpdateAmount(name, value, use);}
 		)
 	}
-	changeValue(e) { }
-	changeUse(e) { }
+
+	changeCompany(e) {
+		const { idx, company, amount, use } = this.state
+		this.setState({ company: e.target.value }, () => {
+			this.props.cbUpdateItem(idx, { company: company, amount: amount, use: use })
+		})
+	}
+	changeAmount(e) {
+		const { idx, company, amount, use } = this.state
+		this.setState({ amount: e.target.value }, () => {
+			this.props.cbUpdateItem(idx, { company: company, amount: amount, use: use })
+		})
+	}
+
+	changeUse(e) {
+		const { idx, company, amount, use } = this.state
+		this.setState({ use: e.target.checked }, () => {
+			this.props.cbUpdateItem(idx, { company: company, amount: amount, use: use })
+		})
+	}
 
 	render() {
-		const { name, value, use } = this.state
+		const { idx, company, amount, use } = this.props.item
 		return (
-			<InputGroup className="mb-1" size="sm">
+			<InputGroup className="mb-1" size="sm" id={String(idx)}>
 				<InputGroup.Prepend>
-					<InputGroup.Checkbox onChange={this.changeUse} checked={use} />
+					<InputGroup.Checkbox name="use" onChange={this.changeUse} checked={use} />
 				</InputGroup.Prepend>
 				<Form.Control
 					type="text"
-					placeholder="Name"
-					value={!name ? "" : String(name)}
-					onChange={this.changeName}
+					name="company"
+					placeholder="Company name"
+					value={company}
+					onChange={this.changeCompany}
 				/>
 				<Form.Control
 					type="text"
+					name="amount"
 					placeholder="Amount"
-					value={!value || isNaN(value) ? "" : Number(value)}
-					onChange={this.changeValue}
+					value={!amount || isNaN(amount) ? "" : Number(amount)}
+					onChange={this.changeAmount}
 				/>
 			</InputGroup>
 		)

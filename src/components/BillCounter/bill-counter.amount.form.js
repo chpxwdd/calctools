@@ -6,44 +6,49 @@ export default class BillCounterAmountForm extends Component {
 	constructor(props) {
 		super(props)
 		this.state = {
-			amounts: {},
+			list: [],
 		}
 
-		this.cbUseAmount = this.cbUseAmount.bind(this)
+		this.cbUpdateItem = this.cbUpdateItem.bind(this)
+	}
+	componentDidUpdate(prevProps, prevState) {
+		console.log("componentDidUpdate", this.state.list)
 	}
 
-	cbUseAmount(amount) {
-		const { amounts } = this.state
-
-		if (amounts) {
-			amounts[amount.name] = amount
-		} else {
-			delete amounts[amount.name]
+	cbUpdateItem(item) {
+		const { list } = this.state
+		var index;
+		if (list.lenght === 0) {
+			item.index = 1
 		}
-		this.setState({ amounts: amounts }, function (props, state) {
-			this.props.cbUseAmounts(amounts)
+		
+		if (list) {
+			list[index] = item
+		} else {
+			delete list[index]
+		}
+		this.setState({ list: list }, () => {
+			this.props.cbUpdateList(list)
 		})
 	}
 
 	/** */
 	render() {
-		const { amounts } = this.state
+		const { list } = this.state
 		return (
 			<Form.Row as={Row}>
-				{Object.keys(amounts).map((amount, key) =>
+				{/* {Object.keys(list).map((item, key) => */}
+				{list.map((item, key) =>
 					<div key={key}>
 						<Form.Group as={Col}>
-							<BillCounterAmountFormItem cbUseAmount={this.cbUseAmount} value={amount.value} name={amount.name} use={amount.use} />
+							<BillCounterAmountFormItem cbUpdateItem={this.cbUpdateItem} item={item} />
 						</Form.Group>
 					</div>
 				)}
-
 				<Form.Group as={Col}>
-					<BillCounterAmountFormItem
-						cbUseAmount={this.cbUseAmount}
-						amount={{ name: "Company".concat(String(Number(amounts.length) + 1)), value: null, use: true }}
-					/>
+					<BillCounterAmountFormItem cbUpdateItem={this.cbUpdateItem} item={{ amount: 0, company: "", use: false }} />
 				</Form.Group>
+
 			</Form.Row >
 		)
 	}

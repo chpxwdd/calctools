@@ -1,22 +1,25 @@
 import React, { Component } from "react"
 import { Col, Row, Form, InputGroup } from "react-bootstrap"
 import UICounter from '../UI/ui.counter'
+// const TYPE_COIN = "coin"
+// const TYPE_COUPURE = "coupure"
 export default class BillCounterNominalFormItem extends Component {
 	constructor(props) {
 		super(props)
 		this.state = {
-			nominal: "",
+			// type: TYPE_COUPURE,
+			denomination: "",
 			count: null,
 			use: false,
 		}
 
 		this.useHandler = this.useHandler.bind(this)
-		this.cbCount = this.cbCount.bind(this)
+		this.cbUpdateCount = this.cbUpdateCount.bind(this)
 	}
 
 	componentDidMount() {
-		const { nominal } = this.props
-		this.setState({ nominal: nominal, count: null })
+		const { denomination } = this.props
+		this.setState({ denomination: denomination, count: null })
 	}
 
 
@@ -30,33 +33,30 @@ export default class BillCounterNominalFormItem extends Component {
 		// this.setState({ use: Boolean(checked) })
 	}
 
-	cbCount(count) {
+	cbUpdateCount(count) {
 		console.log("callback cbUpdate", count)
-		const { nominal } = this.state
-		this.setState({ nominal: nominal, count: count }, function (props, state) {
-			this.props.cbUseNominal(nominal, Number(count));
+		const { denomination } = this.state
+		this.setState({ denomination: denomination, count: count }, () => {
+			this.props.cbUpdateItem(denomination, Number(count));
 		})
 	}
 
 	render() {
-		const { count, use, nominal } = this.state
+		const { count, use, denomination } = this.state
 		return (
-
 			<Row >
 				<Form.Group className='mb-1' as={Col}>
-					<InputGroup key={nominal} size="sm">
+					<InputGroup key={denomination} size="sm">
 						<InputGroup.Prepend>
 							<InputGroup.Checkbox onChange={this.useHandler} checked={use} />
 						</InputGroup.Prepend>
-						<Form.Control value={nominal} disabled />
+						<Form.Control value={denomination} disabled />
 					</InputGroup>
 				</Form.Group>
 				<Form.Group className='mb-1' as={Col}>
-					{/* {use && <UICounter value={count} cbCount={this.cbCount} min={0} max={null} />} */}
-					<UICounter value={count} cbCount={this.cbCount} min={0} max={null} disabled={!use} />
+					<UICounter value={count} cbUpdateCount={this.cbUpdateCount} min={0} max={null} disabled={!use} />
 				</Form.Group>
 			</Row>
-
 		)
 	}
 }
