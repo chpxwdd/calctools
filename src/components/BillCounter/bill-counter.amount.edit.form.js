@@ -42,7 +42,8 @@ export default class BillCounterAmountEditForm extends Component {
 		const { label, amount } = this.state
 		return (
 			<Form.Row>
-				<Form.Group md={4} lg={3} sm={6} xs={6} as={Col} controlId="inputElementAmountLabel">
+				<Form.Group as={Col} lg={2} md={3} sm={4} xs={5}
+					controlId="inputElementAmountLabel">
 					<Form.Control
 						size="sm"
 						name="label"
@@ -51,7 +52,7 @@ export default class BillCounterAmountEditForm extends Component {
 						onChange={e => this.handleChange("label", e)}
 					/>
 				</Form.Group>
-				<Form.Group as={Col} controlId="inputElementAmountCount">
+				<Form.Group as={Col} lg={2} md={3} sm={4} xs={5} controlId="inputElementAmountCount">
 					<Form.Control
 						size="sm"
 						name="amount"
@@ -60,7 +61,7 @@ export default class BillCounterAmountEditForm extends Component {
 						onChange={e => this.handleChange("amount", e)}
 					/>
 				</Form.Group>
-				<Form.Group as={Col} controlId="buttonElementAmountSave">
+				<Form.Group as={Col} lg={1} md={2} sm={4} xs={1} controlId="buttonElementAmountSave">
 					<Button
 						size="sm"
 						variant="primary"

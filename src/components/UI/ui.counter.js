@@ -26,20 +26,20 @@ export default class UICounter extends Component {
         return (
             <InputGroup size="sm">
                 <InputGroup.Prepend>
-                    <Button variant="secondary"
+                    <Button variant="dark"
                         onClick={(e) => this.props.cbUpdateCount(Number(this.props.value) - 1)}
                         disabled={(min === Number(value) && min !== null) || disabled}
                     ><i className="fa fa-minus" />
                     </Button>
                 </InputGroup.Prepend>
-                <Form.Control className="bg-default text-secondary"
+                <Form.Control className="text-center" style={{ fontWeight: "600" }}
                     placeholder="0"
                     onChange={this.setValue}
                     value={Number(value)}
                     disabled={disabled}
                 />
                 <InputGroup.Append>
-                    <Button variant="secondary"
+                    <Button variant="dark"
                         onClick={(e) => cbUpdateCount(Number(this.props.value) + 1)}
                         disabled={((max === Number(value) && max !== null) || disabled)}
                     ><i className="fa fa-plus" />
