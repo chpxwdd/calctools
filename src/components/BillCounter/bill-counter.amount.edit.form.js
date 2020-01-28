@@ -41,35 +41,36 @@ export default class BillCounterAmountEditForm extends Component {
 		const { isEdit } = this.props
 		const { label, amount } = this.state
 		return (
-			<Form.Row>
-				<Form.Group as={Col} lg={2} md={3} sm={4} xs={5}
-					controlId="inputElementAmountLabel">
-					<Form.Control
+			<Form inline className="mb-2">
+				<Form.Group controlId="label" className="mr-2">
+					<Form.Label style={{ width: "100px", justifyContent: "right" }} className="mr-1">Метка</Form.Label>
+					<Form.Control style={{ width: "100px" }}
 						size="sm"
-						name="label"
+						id="label"
 						placeholder="Label"
 						value={label}
 						onChange={e => this.handleChange("label", e)}
 					/>
-				</Form.Group>
-				<Form.Group as={Col} lg={2} md={3} sm={4} xs={5} controlId="inputElementAmountCount">
-					<Form.Control
+					{/* <Form.Control.Feedback>Looks good!</Form.Control.Feedback> */}
+				</Form.Group >
+				<Form.Group controlId="amount" className="mr-2">
+					<Form.Label style={{ width: "100px", justifyContent: "right" }} className="mr-1">Сумма</Form.Label>
+					<Form.Control style={{ width: "100px" }}
 						size="sm"
-						name="amount"
+						id="amount"
 						placeholder="0"
 						value={!amount || isNaN(amount) ? "" : Number(amount)}
 						onChange={e => this.handleChange("amount", e)}
 					/>
 				</Form.Group>
-				<Form.Group as={Col} lg={1} md={2} sm={4} xs={1} controlId="buttonElementAmountSave">
-					<Button
-						size="sm"
-						variant="primary"
+				<Form.Group controlId="save" className="mr-2">
+					<Button size="sm"
+						id="save"
 						onClick={this.handleSubmit}
 						disabled={Boolean(!amount)}
 					>{isEdit ? "Upd" : "Add"}</Button>
 				</Form.Group>
-			</Form.Row>
+			</Form>
 
 		)
 	}

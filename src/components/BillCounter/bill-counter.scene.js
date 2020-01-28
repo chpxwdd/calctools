@@ -80,20 +80,18 @@ export default class BillCounterScene extends Component {
 		const { amounts, nominals, selectNominal, selectAmount } = this.state
 		return (
 			<Fragment>
-				<Form>
-					<BillCounterNominalEditForm
-						cbUpdateNominals={this.cbUpdateNominals}
-						nominals={nominals}
-						cbNominalUse={this.cbNominalUse}
-					// isEdit={Boolean(selectNominal)} nominal={nominal.filter(n => n.idx === selectNominal)} 
-					/>
-					<BillCounterAmountEditForm
-						cbUpdateAmounts={this.cbUpdateAmounts}
-					// isEdit={Boolean(selectAmount)} amount={amounts.filter(a => a.idx === selectAmount)} 
-					/>
-					<hr />
-					<Alert size="sm" variant="primary">Total: <strong>{calculateSum(amounts)}</strong></Alert>
-				</Form>
+				<BillCounterNominalEditForm
+					cbUpdateNominals={this.cbUpdateNominals}
+					// nominals={nominals}
+					cbNominalUse={this.cbNominalUse}
+				// isEdit={Boolean(selectNominal)} nominal={nominal.filter(n => n.idx === selectNominal)} 
+				/>
+				<BillCounterAmountEditForm cbUpdateAmounts={this.cbUpdateAmounts}
+				// isEdit={Boolean(selectAmount)}
+				// amount={amounts.filter(a => a.idx === selectAmount)}
+				/>
+				<hr />
+				<Alert size="sm" variant="primary">Total: <strong>{calculateSum(amounts)}</strong></Alert>
 				<hr />
 				<BillCounterGrid amounts={amounts} nominals={nominals}></BillCounterGrid>
 				{/* {amounts.length > 0 && <BillCounterGrid amounts={amounts} nominals={nominals}></BillCounterGrid>} */}

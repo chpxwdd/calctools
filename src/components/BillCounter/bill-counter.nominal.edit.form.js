@@ -1,5 +1,5 @@
-import React, { Component } from "react"
-import { Col, Button, Form, Badge, DropdownButton, Dropdown } from "react-bootstrap"
+import React, { Fragment, Component } from "react"
+import { Row, Col, Button, Form, Badge, DropdownButton, Dropdown } from "react-bootstrap"
 import UICounter from '../UI/ui.counter'
 import { BILL_NOMINALS } from "../../constants/bill-counter.js"
 
@@ -14,30 +14,33 @@ export default class BillCounterNominalEditForm extends Component {
 		}
 
 		this.handleChange = this.handleChange.bind(this)
-		this.handleAddClick = this.handleAddClick.bind(this)
+		this.handleSave = this.handleSave.bind(this)
 		this.cbUpdateCount = this.cbUpdateCount.bind(this)
+		this.hasNominalUsed = this.hasNominalUsed.bind(this)
 	}
-
-	// componentDidMount() { this.setState({ nominal: BILL_NOMINALS[0] }) }
 
 	// shouldComponentUpdate(nextProps, nextState, cb) {
 	// 	return true
 	// }
 
-	handleChange(e) {
-		this.setState({ nominal: e.target.value })
+	hasNominalUsed(nominal) {
+		const { nominals } = this.props
+		return nominals.some(item => String(item.nominal) === String(nominal));
 	}
 
-	handleAddClick(e) {
-		const { idx, nominal, count } = this.state
-		const item = { idx: idx, nominal: nominal, count: count }
+	handleChange(e) {
+		this.setState({ nominal: e.target.value })
+		console.log()
+	}
+
+	handleSave(e) {
 		this.setState((state, props) => {
 			return {
 				idx: "",
-				nominal: String(BILL_NOMINALS.find(val => (nominal !== val && !this.props.cbNominalUse(val)))),
+				nominal: String(BILL_NOMINALS.find(val => (state.nominal !== val && !props.cbNominalUse(val)))),
 				count: 0
 			}
-		}, () => { this.props.cbUpdateNominals(item) })
+		}, this.props.cbUpdateNominals({ ...this.state }))
 	}
 
 	cbUpdateCount(count) {
@@ -49,23 +52,25 @@ export default class BillCounterNominalEditForm extends Component {
 		const { count, nominal } = this.state
 		const { cbNominalUse } = this.props
 		return (
-			<Form.Row>
+			<Fragment >
+				<Form inline className="mb-2">
+					<Form.Group controlId="nominal" className="mr-2">
+						<Form.Label style={{ width: "100px", justifyContent: "right" }} className="mr-1">Номинал</Form.Label>
+						<Form.Control style={{ width: "100px" }} as="select" size="sm" value={nominal} onChange={this.handleChange} id="nominal">
+							{BILL_NOMINALS.map((value, key) => <option key={key} value={value} disabled={cbNominalUse(value)} >{value} </option>)}
+						</Form.Control>
+						{/* <Form.Control.Feedback>Looks good!</Form.Control.Feedback> */}
+					</Form.Group >
+					<Form.Group controlId="count" className="mr-2">
+						<Form.Label style={{ width: "100px", justifyContent: "right" }} className="mr-1">Количество</Form.Label>
+						<UICounter value={count} cbUpdateCount={this.cbUpdateCount} min={0} max={null} disabled={Boolean(!nominal)} />
+					</Form.Group>
+					<Form.Group controlId="save">
+						<Button onClick={this.handleSave} disabled={Boolean(!(nominal && count))} size="sm" name="save">Add</Button>
+					</Form.Group>
+				</Form >
 
-				<Form.Group as={Col} lg={2} md={3} sm={4} xs={5} controlId="selectElementNominal" >
-					<Form.Control as="select" size="sm" value={nominal} onChange={this.handleChange} className="bg-light">
-						{BILL_NOMINALS.map((value, key) => {
-							const use = cbNominalUse(value)
-							return (<option key={key} value={value} disabled={use} >{value} </option>)
-						})}
-					</Form.Control>
-				</Form.Group>
-				<Form.Group as={Col} lg={2} md={3} sm={4} xs={5} controlId="inputElementCount">
-					<UICounter value={count} cbUpdateCount={this.cbUpdateCount} min={0} max={null} disabled={Boolean(!nominal)} />
-				</Form.Group>
-				<Form.Group as={Col} lg={1} md={2} sm={4} xs={1} controlId="buttonElementAdd">
-					<Button onClick={this.handleAddClick} disabled={Boolean(!(nominal && count))} size="sm">Add</Button>
-				</Form.Group>
-			</Form.Row >
+			</Fragment >
 
 		)
 	}

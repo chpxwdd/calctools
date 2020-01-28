@@ -23,27 +23,20 @@ export default class UICounter extends Component {
 
     render() {
         const { min, max, value, cbUpdateCount, disabled } = this.props
+        const incDisabled = (max === Number(value) && max !== null) || disabled
+        const decDisabled = (min === Number(value) && min !== null) || disabled
         return (
-            <InputGroup size="sm">
+            <InputGroup size="sm" style={{ width: "100px" }}>
                 <InputGroup.Prepend>
-                    <Button variant="dark"
-                        onClick={(e) => this.props.cbUpdateCount(Number(this.props.value) - 1)}
-                        disabled={(min === Number(value) && min !== null) || disabled}
-                    ><i className="fa fa-minus" />
-                    </Button>
+                    <Button onClick={e => this.props.cbUpdateCount(value - 1)} disabled={decDisabled}><i className="fa fa-minus" /></Button>
                 </InputGroup.Prepend>
-                <Form.Control className="text-center" style={{ fontWeight: "600" }}
-                    placeholder="0"
-                    onChange={this.setValue}
-                    value={Number(value)}
+                <Form.Control name="count" style={{ fontWeight: "600", textAlign: "center" }} onChange={e => cbUpdateCount(Number(e.target.value))}
+                    value={value}
                     disabled={disabled}
                 />
                 <InputGroup.Append>
-                    <Button variant="dark"
-                        onClick={(e) => cbUpdateCount(Number(this.props.value) + 1)}
-                        disabled={((max === Number(value) && max !== null) || disabled)}
-                    ><i className="fa fa-plus" />
-                    </Button>
+                    <Button onClick={e => cbUpdateCount(value -
+                        1)} disabled={incDisabled} ><i className="fa fa-plus" /></Button>
                 </InputGroup.Append>
             </InputGroup>
         )
