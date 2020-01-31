@@ -16,17 +16,6 @@ export default class BillCounterAmountFormItem extends Component {
 		this.handleChange = this.handleChange.bind(this)
 	}
 
-	componentDidMount() {
-
-	}
-	// componentDidUpdate(prevProps, prevState) {
-	// 	if (this.state !== prevState) {
-	// 		const { idx, company, amount, use } = this.state
-	// 		this.props.cbUpdateItem(idx, { company: company, amount: amount, use: use });
-	// 	}
-	// }
-	// componentWillUpdate(nextProps, nextState) {	}
-
 	handleChange(e) {
 		this.setState({ company: e.target.value }
 			// , () => {

@@ -1,42 +1,48 @@
 
 import React, { Fragment, Component } from 'react'
 import { InputGroup, Col, Form, Button } from 'react-bootstrap'
+
 export default class UICounter extends Component {
     constructor(props) {
         super(props)
         this.setValue = this.setValue.bind(this)
-        this.incerment = this.incerment.bind(this)
-        this.decerment = this.decerment.bind(this)
+        this.increment = this.increment.bind(this)
+        this.decrement = this.decrement.bind(this)
     }
 
-    incerment(e) {
-        this.props.cbUpdateCount(Number(this.props.value) + 1)
+    increment(e) {
+        const { obj, value, cbUpdateCount } = this.props
+        console.log("obj")
+        cbUpdateCount(Number(value) + 1, obj ? obj : null)
     }
 
-    decerment(e) {
-        this.props.cbUpdateCount(Number(this.props.value) - 1)
+    decrement(e) {
+        const { obj, value, cbUpdateCount } = this.props
+        cbUpdateCount(Number(value) - 1, obj ? obj : null)
     }
 
     setValue(e) {
-        this.props.cbUpdateCount(Number(e.target.value))
+        const { value } = e.target
+        const { obj, cbUpdateCount } = this.props
+        cbUpdateCount(Number(value), obj ? obj : null)
     }
 
     render() {
-        const { min, max, value, cbUpdateCount, disabled } = this.props
+        const { min, max, value, bsSize, width, disabled, name } = this.props
         const incDisabled = (max === Number(value) && max !== null) || disabled
         const decDisabled = (min === Number(value) && min !== null) || disabled
         return (
-            <InputGroup size="sm" style={{ width: "100px" }}>
+            <InputGroup size={bsSize} style={{ width: width ? width : "auto", textAlign: "center" }} controlid={name ? name : "count"}>
                 <InputGroup.Prepend>
-                    <Button onClick={e => this.props.cbUpdateCount(value - 1)} disabled={decDisabled}><i className="fa fa-minus" /></Button>
+                    <Button onClick={this.decrement} disabled={decDisabled}>
+                        <i className="fa fa-minus" />
+                    </Button>
                 </InputGroup.Prepend>
-                <Form.Control name="count" style={{ fontWeight: "600", textAlign: "center" }} onChange={e => cbUpdateCount(Number(e.target.value))}
-                    value={value}
-                    disabled={disabled}
-                />
+                <Form.Control onChange={this.setValue} value={value} disabled={disabled} name={name ? name : "count"} />
                 <InputGroup.Append>
-                    <Button onClick={e => cbUpdateCount(value -
-                        1)} disabled={incDisabled} ><i className="fa fa-plus" /></Button>
+                    <Button onClick={this.increment} disabled={incDisabled} >
+                        <i className="fa fa-plus" />
+                    </Button>
                 </InputGroup.Append>
             </InputGroup>
         )

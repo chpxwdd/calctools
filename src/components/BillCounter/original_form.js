@@ -27,20 +27,6 @@ export default class BillCounterCompanyFormItem extends Component {
 		this.submitHandler = this.submitHandler.bind(this)
 	}
 
-	// componentDidMount() { console.log(this.state) }
-
-	// componentDidUpdate() {
-	// 	const { sums, bills } = this.state
-	// 	if (Object.keys(sums).length && Object.keys(bills).length) {
-	// 		this.props.setOptions(sums, bills)
-	// 	}
-	// 	// console.log(this.state)
-	// }
-	componentWillUpdate(nextProps, nextState) {
-		console.log("componentWillReceiveProps")
-		console.log("nextProps ", nextProps)
-		console.log("nextState ", nextState)
-	}
 	/** BILL FORM-GROUP HANDLERS */
 	checkboxBillHandler(e, bill) {
 		const { checked } = e.target

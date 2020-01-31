@@ -11,9 +11,6 @@ export default class BillCounterAmountForm extends Component {
 
 		this.cbUpdateItem = this.cbUpdateItem.bind(this)
 	}
-	componentDidUpdate(prevProps, prevState) {
-		console.log("componentDidUpdate", this.state.list)
-	}
 
 	cbUpdateItem(item) {
 		const { list } = this.state
@@ -21,7 +18,7 @@ export default class BillCounterAmountForm extends Component {
 		if (list.lenght === 0) {
 			item.index = 1
 		}
-		
+
 		if (list) {
 			list[index] = item
 		} else {

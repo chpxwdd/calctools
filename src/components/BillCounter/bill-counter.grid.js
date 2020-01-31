@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from "react"
-import { Table, Alert } from "react-bootstrap"
+import { Row, Col, Table, Alert } from "react-bootstrap"
 
 export default class BillCounterGrid extends Component {
     constructor(props) {
@@ -17,7 +17,7 @@ export default class BillCounterGrid extends Component {
                 return (
                     <tr key={nObj.idx}>
                         <td>{nObj.nominal}</td>
-                        {/* <td>{this.renderNominalActions(aObj)}</td> */}
+                        <td>{nObj.count}</td>
                         {amounts.map((aObj, aKey) => {
                             return (
                                 <td>{aObj.amount}</td>
@@ -33,9 +33,10 @@ export default class BillCounterGrid extends Component {
     renderTHead() {
         const { amounts, nominals } = this.props
         // const { distribute } = this.state
+
         return (
             <tr>
-                <th>actions</th>
+                <th colspan="2">Nominals</th>
                 {amounts.map((item, key) => {
                     return (
                         <th key={key} style={{ textAllign: "center" }}>
@@ -53,14 +54,25 @@ export default class BillCounterGrid extends Component {
         const { distribute } = this.state
         return (
             <Fragment>
-                <Table size="sm" bordered={Boolean(true)} borderless={Boolean(false)} >
-                    <thead>{this.renderTHead()}</thead>
-                    <tbody>{this.renderTBody()}</tbody>
-                </Table >
+                {nominals.map((nominalObject, key) => {
+                    return (
+                        <Row key={String("nominal-").concat(key)}>
+                            <Col sm={1}>{nominalObject.nominal}</Col>
+                            <Col sm={1} key={key}>{nominalObject.nominal}</Col>
+                            {amounts.map((amountObject, key) => {
+                                return (
+                                    <Col
+                                        key={String("amount-").concat(key)}
+                                        id={amountObject.idx}>
+                                        <small>{amountObject.label}</small> {amountObject.amount}
+                                    </Col>
+                                )
+                            })}
+                        </Row>
+                    )
+                })}
             </Fragment>
         )
-
     }
-
 }
 

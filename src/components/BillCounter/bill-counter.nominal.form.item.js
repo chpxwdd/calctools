@@ -8,18 +8,13 @@ export default class BillCounterNominalFormItem extends Component {
 		super(props)
 		this.state = {
 			// type: TYPE_COUPURE,
-			denomination: "",
+			denomination: props.denomination,
 			count: null,
 			use: false,
 		}
 
 		this.useHandler = this.useHandler.bind(this)
 		this.cbUpdateCount = this.cbUpdateCount.bind(this)
-	}
-
-	componentDidMount() {
-		const { denomination } = this.props
-		this.setState({ denomination: denomination, count: null })
 	}
 
 

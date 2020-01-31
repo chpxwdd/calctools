@@ -1,5 +1,5 @@
 import React, { Component } from "react"
-import { Form, Col, Button } from "react-bootstrap"
+import { Form, Row, Col, Button } from "react-bootstrap"
 
 export default class BillCounterAmountEditForm extends Component {
 	constructor(props) {
@@ -13,14 +13,6 @@ export default class BillCounterAmountEditForm extends Component {
 		this.handleSubmit = this.handleSubmit.bind(this)
 	}
 
-	// componentWillReceiveProps(nextProps, nextState) {
-	// 	if (nextProps.isEdit) {
-	// 	  this.setState({
-	// 		label: nextProps.isEdit.label,
-	// 		amount: nextProps.isEdit.amount
-	// 	  });
-	// 	}
-	// }
 
 	componentDidMount() {
 		// if (this.props.idx)
@@ -41,34 +33,19 @@ export default class BillCounterAmountEditForm extends Component {
 		const { isEdit } = this.props
 		const { label, amount } = this.state
 		return (
-			<Form inline className="mb-2">
-				<Form.Group controlId="label" className="mr-2">
-					<Form.Label style={{ width: "100px", justifyContent: "right" }} className="mr-1">Метка</Form.Label>
-					<Form.Control style={{ width: "100px" }}
-						size="sm"
-						id="label"
-						placeholder="Label"
-						value={label}
-						onChange={e => this.handleChange("label", e)}
-					/>
-					{/* <Form.Control.Feedback>Looks good!</Form.Control.Feedback> */}
+			<Form >
+				<Form.Group as={Row} controlId="label" className="mb-1">
+					<Form.Label column className="d-none d-md-block">Метка</Form.Label>
+					<Col>
+						<Form.Control size="sm" placeholder="Метка" value={label} onChange={e => this.handleChange("label", e)} />
+					</Col>
 				</Form.Group >
-				<Form.Group controlId="amount" className="mr-2">
-					<Form.Label style={{ width: "100px", justifyContent: "right" }} className="mr-1">Сумма</Form.Label>
-					<Form.Control style={{ width: "100px" }}
-						size="sm"
-						id="amount"
-						placeholder="0"
-						value={!amount || isNaN(amount) ? "" : Number(amount)}
-						onChange={e => this.handleChange("amount", e)}
-					/>
+				<Form.Group as={Row} controlId="amount" className="mb-1">
+					<Form.Label column className="d-none d-md-block">Сумма</Form.Label>
+					<Col><Form.Control size="sm" placeholder="Сумма" value={!amount || isNaN(amount) ? "" : Number(amount)} onChange={e => this.handleChange("amount", e)} /></Col>
 				</Form.Group>
-				<Form.Group controlId="save" className="mr-2">
-					<Button size="sm"
-						id="save"
-						onClick={this.handleSubmit}
-						disabled={Boolean(!amount)}
-					>{isEdit ? "Upd" : "Add"}</Button>
+				<Form.Group as={Row} controlId="save" className="mb-1">
+					<Col xs={{ span: 6, offset: 6 }} ><Button size="sm" onClick={this.handleSubmit} disabled={Boolean(!amount)} style={{ width: "100%" }} >{isEdit ? "Upd" : "Add"}</Button></Col>
 				</Form.Group>
 			</Form>
 

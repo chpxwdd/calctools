@@ -18,7 +18,6 @@ export default class Root extends Component {
               <Route exact path="/" render={() => { return (<div>HOME simple return</div>) }} />
               <Route exact path="/billcounter" component={BillCounter.Scene} />
             </Switch>
-
           </div>
         </Container>
       </div >
