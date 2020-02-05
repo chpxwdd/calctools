@@ -20,18 +20,9 @@ export default class BillCounterScene extends Component {
 		this.cbUpdateAmounts = this.cbUpdateAmounts.bind(this)
 	}
 
-	componentWillUpdate(nextProps, nextState) {
-		console.log(nextState)
 
-	}
-
-	// shouldComponentUpdate(prevProps, prevState) {
-	// 	return false
-	// }
 	cbUpdateAmounts(item) {
 		const { amounts } = this.state
-
-		// add amount
 		if (Boolean(!item.idx)) {
 			let idx = Number(amounts.length + 1)
 			let label = String(item.label) === "" ? String("Company").concat(idx) : String(item.label)
@@ -39,8 +30,6 @@ export default class BillCounterScene extends Component {
 			this.setState({ amounts })
 			return
 		}
-		// upd amount
-		// remove amount
 	}
 
 	cbUpdateNominalCount(count, idx) {
@@ -69,7 +58,12 @@ export default class BillCounterScene extends Component {
 				break
 		}
 
-		nominals.sort((prev, next) => {
+
+		this.setState({ nominals })
+	}
+
+	sortNominals = (nominals) => {
+		return nominals.sort((prev, next) => {
 			if (prev.nominal > next.nominal) {
 				return -1
 			}
@@ -78,8 +72,17 @@ export default class BillCounterScene extends Component {
 			}
 			return 0
 		})
-
-		this.setState({ nominals })
+	}
+	sortAmounts = (amounts) => {
+		return amounts.sort((prev, next) => {
+			if (prev.amount > next.amount) {
+				return -1
+			}
+			if (prev.amount < next.amount) {
+				return 1
+			}
+			return 0
+		})
 	}
 
 	cbNominalUse(nominal) {
@@ -94,14 +97,11 @@ export default class BillCounterScene extends Component {
 	amountsTotal = () => {
 		const { amounts } = this.state
 		return amounts.reduce((accum, item) => accum + item.amount, 0)
-
 	}
-
 	renderNominalForm() {
 		const { nominals, selectNominal } = this.state
 		const nTotal = this.nominalsTotal()
 		const aTotal = this.amountsTotal()
-
 		return (
 
 			<Card bg="light" >
@@ -138,71 +138,73 @@ export default class BillCounterScene extends Component {
 		)
 	}
 
+	/**
+	 headers = [
+		 {},
+	 ]
 
-	calculate = () => {
+	 limits = {1:87304, 2:34560, 3:10550}
+	 rows = {
+
+		 i : 1 [idx],
+		 nominal: 5000 [nominal]
+		 count:21 [count]
+		 total: 105000 [(nominal * count)]
+		 amounts:{
+			1 [a.idx] : {
+				 			available: ,
+				 			count:  1
+						},
+			2: {
+
+				},
+			3: {
+
+				}
+		}
+	}
+	 */
+
+	// getAvailableAmount(rowset, ){}
+
+	calculate() {
 		const { nominals, amounts } = this.state
-		const countAmountItems = amounts.length
-
-		// const nominalIndexes = Array.from(amounts, a =>  a.idx)
-		const aIds = Array.from(amounts, a => a.idx)
-		let totals = Array.from(amounts, a => a.amount)
-
-		let res = {}
-		let checkCompanyAmounts = {}
-		nominals.forEach((n, key) => {
-			console.group("Номинал -", n.nominal, " [", n.count, " шт.]")
-			if (!res[n.nominal]) {
-				res[n.nominal] = {}
-			}
-
-			let countDiff = n.count
-
-			for (let i = 1; i <= n.count; i++) {
-
-
+		let spent = {}
+		let rowset = {}
+		nominals.forEach((nObj, nKey) => {
+			const { count, nominal } = nObj
+			const n = Number(nObj.idx)
+			console.group("idx:", n, ", nominal:", nominal, ", count:", count)
+			let i = 0
+			rowset[n] = {}
+			while (i < count) {
 				// eslint-disable-next-line no-loop-func
-				amounts.forEach((a, key) => {
-
-					if (!checkCompanyAmounts[a.label]) {
-						checkCompanyAmounts[a.label] = a.amount
-						console.log("Создан обьект проверки суммы для компании " + a.label)
-					}
-
-					if (!res[n.nominal][a.label]) {
-						console.log("Сoздаем набор купюр номиналом " + n.nominal + " для компании " + a.label)
-						res[n.nominal][a.label] = 0
-					}
-
-					if (i < n.count) {
-						res[n.nominal][a.label]++
-						i++
-						countDiff = countDiff - 1
-
-
-						console.log("Для номинала ", n.nominal, " осталось ", countDiff)
-
-					}
-
-
+				amounts.forEach((aObj, aKey) => {
+					const { amount } = aObj
+					const a = aObj.idx
+					if (!spent[a]) spent[a] = amount
+					if (!rowset[n][a]) rowset[n][a] = 0
+					// если не помещается купюра в текущий остаток для компании
+					if ((spent[a] - nominal) < 0) return
+					spent[a] -= nominal
+					rowset[n][a]++
+					// закончились купюры для номинала
+					if (i === count) return
+					i++
 				})
-
-				// даем каждому Amount  по одной проверяя перед этим 
-				// 1. не превысим ли мы сумму для компании
-
 			}
-			console.log(checkCompanyAmounts)
-			console.log(res[n.nominal])
-			console.groupEnd()
+			return
 
 		})
-
-		console.log("res", res)
-		return res
+		console.log(rowset)
+		return rowset
 	}
 
 	render() {
-		this.calculate()
 		const { amounts, nominals } = this.state
+
+		const rows = this.calculate()
+
 		return (
 			<Fragment>
 				<Row>
@@ -214,27 +216,43 @@ export default class BillCounterScene extends Component {
 					<Table size="sm" responsive={true}>
 						<thead>
 							<tr className="text-center">
-								<th colSpan="2"><small>&nbsp;</small><br /><strong>&nbsp;</strong></th>
-								<th>&nbsp;</th>
+								<th>номинал</th><th>eд.<div><small>на сумму</small></div></th>
+								{amounts.map((aObj, key) => <th key={key}>{aObj.amount}</th>)}
 							</tr>
 						</thead>
 						<tbody>
-							{nominals.map((item, key) => {
-								const { idx, nominal, count } = item
+							{nominals.map((nObj, nKey) => {
+								// const nominalItem = nominals.filter(row => row === row.idx)
+
+								const n = nObj.idx
+								const { count, nominal } = nObj
+								const nominalTotal = count * nominal
 								return (
-									<tr key={key} className="text-center">
-										<td className="text-right" style={{ width: "60px" }}>{nominal}</td>
-										<td style={{ width: "120px" }}><Badge variant="primary">{count}</Badge></td>
-										<td>&nbsp;</td>
+									<tr key={nKey} className="text-center">
+										<th className="text-left" style={{ width: "80px", verticalAlign: "middle" }}>{nominal}</th>
+										<td className="text-center" style={{ width: "40px" }}>
+											<div><Badge variant="primary">{count}</Badge></div>
+											<div><small>{nominalTotal}</small></div>
+										</td>
+
+										{amounts.map((aObj, aKey) => {
+											const a = aObj.idx
+											const cellValue = isNaN(rows[n][a]) ? 0 : rows[n][a]
+											return (
+												<td key={aKey}>
+													<div><Badge variant={!rows[n][a] ? "light" : "success"}>{cellValue}</Badge></div>
+													<div><small>{(nominal * cellValue)}</small></div>
+												</td>
+											)
+										})}
 									</tr>
 								)
-							})}
+							})
+							}
 						</tbody>
 					</Table>
 				</Row>
-			</Fragment>
-
+			</Fragment >
 		)
 	}
-
 }

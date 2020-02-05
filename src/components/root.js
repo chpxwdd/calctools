@@ -3,10 +3,11 @@ import { Container } from 'react-bootstrap'
 import { Route, Switch } from 'react-router-dom'
 import Page from './Page'
 import BillCounter from './BillCounter'
-// import BillCounter from './BillCounter'
 
 
 export default class Root extends Component {
+
+
   render() {
     return (
       <div>

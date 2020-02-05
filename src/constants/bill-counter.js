@@ -50,12 +50,12 @@ export const TEST_STATE = {
             count: 3
         },
         {
-            idx: 7,
+            idx: 6,
             nominal: 100,
             count: 1
         },
         {
-            idx: 6,
+            idx: 7,
             nominal: 50,
             count: 3
         },
