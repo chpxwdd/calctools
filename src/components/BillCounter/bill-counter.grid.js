@@ -1,5 +1,5 @@
-import React, { Component, Fragment } from "react"
-import { Row, Col, Table, Alert } from "react-bootstrap"
+import React, { Component } from "react"
+import { Badge, Table } from "react-bootstrap"
 
 export default class BillCounterGrid extends Component {
     constructor(props) {
@@ -8,70 +8,46 @@ export default class BillCounterGrid extends Component {
             distribute: []
         }
     }
-
-    renderTBody() {
-        const { nominals, amounts } = this.props
-        return (
-
-            nominals.map((nObj, nKey) => {
-                return (
-                    <tr key={nObj.idx}>
-                        <td>{nObj.nominal}</td>
-                        <td>{nObj.count}</td>
-                        {amounts.map((aObj, aKey) => {
-                            return (
-                                <td>{aObj.amount}</td>
-                            )
-                        }
-                        )}
-                    </tr>
-                )
-            })
-        )
-    }
-
-    renderTHead() {
-        const { amounts, nominals } = this.props
-        // const { distribute } = this.state
-
-        return (
-            <tr>
-                <th colspan="2">Nominals</th>
-                {amounts.map((item, key) => {
-                    return (
-                        <th key={key} style={{ textAllign: "center" }}>
-                            <div className="text-muted">{item.label}</div>
-                            <div>{item.amount}</div>
-                        </th>
-                    )
-                })}
-            </tr>
-        )
-    }
-
     render() {
-        const { amounts, nominals } = this.props
-        const { distribute } = this.state
+        const { amounts, nominals, rows } = this.props
         return (
-            <Fragment>
-                {nominals.map((nominalObject, key) => {
-                    return (
-                        <Row key={String("nominal-").concat(key)}>
-                            <Col sm={1}>{nominalObject.nominal}</Col>
-                            <Col sm={1} key={key}>{nominalObject.nominal}</Col>
-                            {amounts.map((amountObject, key) => {
-                                return (
-                                    <Col
-                                        key={String("amount-").concat(key)}
-                                        id={amountObject.idx}>
-                                        <small>{amountObject.label}</small> {amountObject.amount}
-                                    </Col>
-                                )
-                            })}
-                        </Row>
-                    )
-                })}
-            </Fragment>
+            <Table size="sm" responsive={true}>
+                <thead>
+                    <tr className="text-center">
+                        <th>номинал</th><th>eд.<div><small>на сумму</small></div></th>
+                        {amounts.map((aObj, key) => <th key={key}>{aObj.amount}</th>)}
+                    </tr>
+                </thead>
+                <tbody>
+                    {nominals.map((nObj, nKey) => {
+                        // const nominalItem = nominals.filter(row => row === row.idx)
+                        const n = nObj.idx
+                        const { count, nominal } = nObj
+                        const nominalTotal = count * nominal
+                        return (
+                            <tr key={nKey} className="text-center">
+                                <th className="text-left" style={{ width: "80px", verticalAlign: "middle" }}>{nominal}</th>
+                                <td className="text-center" style={{ width: "40px" }}>
+                                    <div><Badge variant="primary">{count}</Badge></div>
+                                    <div><small>{nominalTotal}</small></div>
+                                </td>
+
+                                {amounts.map((aObj, aKey) => {
+                                    const a = aObj.idx
+                                    const cellValue = isNaN(rows[n][a]) ? 0 : rows[n][a]
+                                    return (
+                                        <td key={aKey}>
+                                            <div><Badge variant={!rows[n][a] ? "light" : "success"}>{cellValue}</Badge></div>
+                                            <div><small>{(nominal * cellValue)}</small></div>
+                                        </td>
+                                    )
+                                })}
+                            </tr>
+                        )
+                    })
+                    }
+                </tbody>
+            </Table>
         )
     }
 }

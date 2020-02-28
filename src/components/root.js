@@ -3,6 +3,7 @@ import { Container } from 'react-bootstrap'
 import { Route, Switch } from 'react-router-dom'
 import Page from './Page'
 import BillCounter from './BillCounter'
+import BillCounterCalculator from './BillCounterCalculator'
 
 
 export default class Root extends Component {
@@ -18,6 +19,7 @@ export default class Root extends Component {
             <Switch>
               <Route exact path="/" render={() => { return (<div>HOME simple return</div>) }} />
               <Route exact path="/billcounter" component={BillCounter.Scene} />
+              <Route path="/calculator" component={BillCounterCalculator} />
             </Switch>
           </div>
         </Container>

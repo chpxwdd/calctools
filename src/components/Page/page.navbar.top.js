@@ -16,11 +16,12 @@ export default class NavbarTop extends Component {
 
             <Navbar.Brand href="/">
               {glyph && <i className={"fas fa-" + glyph} />}
-              {title != '' && (title)}
+              {title !== '' && (title)}
             </Navbar.Brand>
           )}
           <Nav className="mr-auto">
-            <Nav.Link href="/billcounter">Bill Counter</Nav.Link>
+            <Nav.Link href="/billcounter">ver.1</Nav.Link>
+            <Nav.Link href="/calculator">ver.2</Nav.Link>
           </Nav>
           {/* <Auth.NavbarLinks /> */}
         </Container>

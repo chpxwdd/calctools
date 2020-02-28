@@ -1,10 +1,12 @@
 
 import React from 'react'
 import { InputGroup, Form, Button } from 'react-bootstrap'
+
 const UICounter = (props) => {
+
     const { idx, value, cbUpdateCount, disabled } = props
     return (
-        <InputGroup size="sm" className='ui-counter'>
+        <InputGroup size="sm">
             <InputGroup.Prepend>
                 <Button onClick={(e) => cbUpdateCount(value - 1, idx)} disabled={((0 === Number(value) && 0 !== null) || disabled)}><i className="fa fa-minus" /></Button>
             </InputGroup.Prepend>

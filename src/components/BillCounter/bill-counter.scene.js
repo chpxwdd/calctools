@@ -3,7 +3,7 @@ import { Form, Button, Table, Card, Badge, Row, Col, Alert } from "react-bootstr
 
 import BillCounterAmountEditForm from "./bill-counter.amount.edit.form"
 import BillCounterNominalEditForm from "./bill-counter.nominal.edit.form"
-import UICounter from "./ui.counter"
+import UICounter from "../UI/ui.counter"
 
 import { TEST_STATE } from "../../constants/bill-counter"
 
@@ -11,8 +11,8 @@ import { TEST_STATE } from "../../constants/bill-counter"
 export default class BillCounterScene extends Component {
 	constructor(props) {
 		super(props)
-		// this.state = {amounts: [],nominals: [],selectNominal: null,selectAmount: null}
-		this.state = { ...TEST_STATE }
+		this.state = { amounts: [], nominals: [], selectNominal: null, selectAmount: null }
+		// this.state = { ...TEST_STATE }
 
 		this.cbNominalUse = this.cbNominalUse.bind(this)
 		this.cbUpdateNominals = this.cbUpdateNominals.bind(this)
@@ -98,6 +98,7 @@ export default class BillCounterScene extends Component {
 		const { amounts } = this.state
 		return amounts.reduce((accum, item) => accum + item.amount, 0)
 	}
+
 	renderNominalForm() {
 		const { nominals, selectNominal } = this.state
 		const nTotal = this.nominalsTotal()
@@ -131,41 +132,16 @@ export default class BillCounterScene extends Component {
 			<Card bg="light">
 				<Card.Header>Суммы для распределения</Card.Header>
 				<Card.Body className="p-2">
-					<BillCounterAmountEditForm cbUpdateAmounts={this.cbUpdateAmounts} isEdit={Boolean(selectAmount)} amount={amounts.filter(a => a.idx === selectAmount)} />
+					<BillCounterAmountEditForm
+						cbUpdateAmounts={this.cbUpdateAmounts}
+						isEdit={Boolean(selectAmount)}
+						amount={amounts.filter(a => a.idx === selectAmount)}
+					/>
 				</Card.Body>
 				<Card.Footer>{this.amountsTotal()}</Card.Footer>
 			</Card>
 		)
 	}
-
-	/**
-	 headers = [
-		 {},
-	 ]
-
-	 limits = {1:87304, 2:34560, 3:10550}
-	 rows = {
-
-		 i : 1 [idx],
-		 nominal: 5000 [nominal]
-		 count:21 [count]
-		 total: 105000 [(nominal * count)]
-		 amounts:{
-			1 [a.idx] : {
-				 			available: ,
-				 			count:  1
-						},
-			2: {
-
-				},
-			3: {
-
-				}
-		}
-	}
-	 */
-
-	// getAvailableAmount(rowset, ){}
 
 	calculate() {
 		const { nominals, amounts } = this.state
@@ -185,6 +161,7 @@ export default class BillCounterScene extends Component {
 					if (!spent[a]) spent[a] = amount
 					if (!rowset[n][a]) rowset[n][a] = 0
 					// если не помещается купюра в текущий остаток для компании
+					if ((spent[a] - nominal) === 0 && (i === count)) return
 					if ((spent[a] - nominal) < 0) return
 					spent[a] -= nominal
 					rowset[n][a]++
@@ -194,9 +171,7 @@ export default class BillCounterScene extends Component {
 				})
 			}
 			return
-
 		})
-		console.log(rowset)
 		return rowset
 	}
 
